@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
-import { getContentData, editContent, postFormData } from "../service/form";
+import { getContentData, editContent, postFormData } from "../service/post";
 
 export default function addPost(): any {
 
-  const [setImage, setImageUrl] = useState();
+  const [setImage, setImageUrl] = useState(false);
   const [formImage, setFromImage] = useState();
   const [buttonHide, setButtonHide] = useState(true);
   const [waitingHide, setWaiting] = useState(false);
@@ -13,6 +13,7 @@ export default function addPost(): any {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
   
@@ -32,6 +33,8 @@ export default function addPost(): any {
     const response = await postFormData(formData);
 
     toast.success('Create Successfully');
+    reset()
+    setImageUrl(false);
     setWaiting(false);
     setButtonHide(true);
   };
@@ -207,15 +210,15 @@ export default function addPost(): any {
                 autoComplete="country-name"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 defaultValue=""
-                {...register("status", {
+                {...register("publish", {
                   required: "Status is required",
                 })}
               >
                 <option value=''>Seletct Status</option>
                 {/* @ts-ignore */}
-                <option value={true}>True</option>
+                <option value={Boolean(true)}>True</option>
                 {/* @ts-ignore */}
-                <option value={false}>False</option>
+                <option value={Boolean(false)}>False</option>
               </select>
               {errors.status &&
                 <p className="mt-2 text-sm text-red-500">

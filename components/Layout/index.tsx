@@ -3,7 +3,7 @@ import Navigation from '../Navigation'
 import Sidebar from '../Sidebar'
 import { ToastContainer, toast } from 'react-toastify';
 
-export default function Layout({ children }) {
+export default function Layout({ children }: any) {
   return (
     <>
       <Sidebar />

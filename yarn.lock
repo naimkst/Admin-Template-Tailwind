@@ -3034,6 +3034,11 @@
   dependencies:
     "punycode" "^2.1.0"
 
+"url-join@^5.0.0":
+  "integrity" "sha512-n2huDr9h9yzd6exQVnH/jU5mr+Pfx08LRXXZhkLLetAMESRj+anQsTAh940iMrIetKAmry9coFuZQ2jY8/p3WA=="
+  "resolved" "https://registry.npmjs.org/url-join/-/url-join-5.0.0.tgz"
+  "version" "5.0.0"
+
 "util-deprecate@^1.0.1":
   "version" "1.0.2"
 
