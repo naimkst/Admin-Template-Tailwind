@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { ToastContainer, toast } from 'react-toastify';
-import { getContentData, editContent, postFormData } from "../service/post";
+import { ToastContainer, toast } from "react-toastify";
+import { getContentData, postFormData, editContent } from "../../service/post";
+import { useRouter } from "next/router";
 
-export default function addPost(): any {
-
+export default function EditPost(): any {
+  const router = useRouter();
   const [setImage, setImageUrl] = useState(false);
   const [formImage, setFromImage] = useState();
   const [buttonHide, setButtonHide] = useState(true);
   const [waitingHide, setWaiting] = useState(false);
+  const [myForm, setMyForm] = useState<any>({});
 
   const {
     register,
@@ -16,12 +18,10 @@ export default function addPost(): any {
     reset,
     formState: { errors },
   } = useForm();
-  
-  const onSubmit: SubmitHandler<any> = async data => {
 
+  const onSubmit: SubmitHandler<any> = async (data: any) => {
     setWaiting(true);
     setButtonHide(false);
-
     const formData: any = new FormData();
     console.log(data.image);
     formData.append("title", data.title);
@@ -29,19 +29,29 @@ export default function addPost(): any {
     formData.append("image", formImage);
     formData.append("publish", data.publish);
     formData.append("authorId", 1);
-
-    const response = await postFormData(formData);
-
-    toast.success('Create Successfully');
-    reset()
+    const response = await editContent(currentRoute, formData);
+    toast.success("Create Successfully");
     setImageUrl(false);
     setWaiting(false);
     setButtonHide(true);
   };
 
+  const currentRoute = router.query.id;
+  console.log(currentRoute);
+
+  const getData = async (id: any) => {
+    const response = await getContentData(currentRoute);
+    console.log(response);
+    setMyForm(response);
+  };
+
+  useEffect(() => {
+    getData(currentRoute);
+  }, [currentRoute]);
 
   return (
     <>
+      {JSON.stringify(myForm)}
       <div className="max-w-6xl bg-white p-16">
         <h2 className="text-2xl mb-10 font-bold">Add Blog Post</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -58,7 +68,7 @@ export default function addPost(): any {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Blog Title Here"
               required
-              defaultValue=""
+              defaultValue={myForm.title}
               {...register("title", {
                 required: "Title is required",
                 minLength: {
@@ -67,11 +77,11 @@ export default function addPost(): any {
                 },
               })}
             />
-            {errors.title &&
+            {errors.title && (
               <p className="mt-2 text-sm text-red-500">
                 {errors.title?.message}
               </p>
-            }
+            )}
           </div>
 
           <div className="mb-6 mt-6">
@@ -87,20 +97,20 @@ export default function addPost(): any {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Here is your blog coneten.."
               required
-              defaultValue=""
+              defaultValue={myForm.content}
               {...register("content", {
                 required: "Content is required",
                 minLength: {
                   value: 10,
                   message: "Content must be at least 10 characters",
-                }
+                },
               })}
             />
-            {errors.content &&
+            {errors.content && (
               <p className="mt-2 text-sm text-red-500">
                 {errors.content?.message}
               </p>
-            }
+            )}
           </div>
 
           <div>
@@ -109,23 +119,39 @@ export default function addPost(): any {
             </label>
             <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
               <div className="space-y-1 text-center">
-                {setImage ? <img
-                  className="inline-block h-44 w-44 mb-6  ring-2 ring-white"
-                  src={setImage}
-                  alt=""
-                /> : <svg
-                  className="mx-auto h-12 w-12 text-gray-400"
-                  stroke="currentColor"
-                  fill="none"
-                  viewBox="0 0 48 48"
-                  aria-hidden="true"
-                >
-                  {setImage ? '' : <path
-                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                    strokeWidth="2"
-                  ></path>}
 
-                </svg>}
+                { !setImage && 
+                  <img
+                    className="inline-block h-44 w-44 mb-6  ring-2 ring-white"
+                    src={`http://localhost:3000/posts/post-image/${myForm.image}`}
+                    alt=""
+                  />
+                }
+
+                {setImage ? (
+                  <img
+                    className="inline-block h-44 w-44 mb-6  ring-2 ring-white"
+                    src={setImage}
+                    alt=""
+                  />
+                ) : (
+                  <svg
+                    className="mx-auto h-12 w-12 text-gray-400"
+                    stroke="currentColor"
+                    fill="none"
+                    viewBox="0 0 48 48"
+                    aria-hidden="true"
+                  >
+                    {setImage ? (
+                      ""
+                    ) : (
+                      <path
+                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                        strokeWidth="2"
+                      ></path>
+                    )}
+                  </svg>
+                )}
 
                 <div className="flex text-sm text-gray-600">
                   <label
@@ -142,17 +168,13 @@ export default function addPost(): any {
                         required: "Content is required",
                       })}
                       onChange={(event: any) => {
-                        setFromImage(
-                          event.target.files[0],
-                        );
+                        setFromImage(event.target.files[0]);
                         var reader = new FileReader();
                         reader.onload = function (e) {
                           setImageUrl(e.currentTarget.result);
                         };
                         var url = reader.readAsDataURL(event.target.files[0]);
-
                       }}
-
                     />
                   </label>
                   <p className="pl-1">or drag and drop</p>
@@ -163,11 +185,13 @@ export default function addPost(): any {
               </div>
             </div>
 
-            {setImage ? '' : (errors.image &&
-              <p className="mt-2 text-sm text-red-500">
-                {errors.image?.message}
-              </p>)}
-
+            {setImage
+              ? ""
+              : errors.image && (
+                  <p className="mt-2 text-sm text-red-500">
+                    {errors.image?.message}
+                  </p>
+                )}
           </div>
 
           <div className="grid gap-6 mb-6 lg:grid-cols-2 mt-6">
@@ -182,20 +206,20 @@ export default function addPost(): any {
                 id="country"
                 autoComplete="country-name"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                defaultValue=""
+                defaultValue={ myForm.categories }
                 {...register("categories", {
                   required: "Category is required",
                 })}
               >
-                <option value=''>United States</option>
+                <option value="">United States</option>
                 <option value="1">Canada</option>
                 <option value="2">Mexico</option>
               </select>
-              {errors.categories &&
+              {errors.categories && (
                 <p className="mt-2 text-sm text-red-500">
                   {errors.categories?.message}
                 </p>
-              }
+              )}
             </div>
 
             <div>
@@ -209,40 +233,35 @@ export default function addPost(): any {
                 id="country"
                 autoComplete="country-name"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                defaultValue=""
+                defaultValue="{ myForm.publish }"
                 {...register("publish", {
                   required: "Status is required",
                 })}
               >
-                <option value=''>Seletct Status</option>
-                {/* @ts-ignore */}
-                <option value={Boolean(true)}>True</option>
-                {/* @ts-ignore */}
-                <option value={Boolean(false)}>False</option>
+                <option>Seletct Status</option>
+                <option value={1}>True</option>
+                <option value={0}>False</option>
               </select>
-              {errors.status &&
+              {errors.status && (
                 <p className="mt-2 text-sm text-red-500">
                   {errors.status?.message}
                 </p>
-              }
+              )}
             </div>
           </div>
 
           <div>
-            { buttonHide && 
-            <button
-              type="submit"
-              className="text-white mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Submit
-            </button>
-            }
+            {buttonHide && (
+              <button
+                type="submit"
+                className="text-white mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Submit
+              </button>
+            )}
             <br />
-            { waitingHide && 
-            <progress className="progress w-20"></progress>
-            }
+            {waitingHide && <progress className="progress w-20"></progress>}
           </div>
-
         </form>
       </div>
     </>

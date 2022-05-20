@@ -16,10 +16,10 @@ export const deleteById = async (id: any) => {
 };
 
 export const getContentData = async (id: any) => {
-  const { data } = await request.get("/posts/" + id);
+  const { data } = await request.get("/posts/post/" + id);
   return data;
 };
 export const editContent = async (id: any, payload: any) => {
-  const { data } = await request.patch("/posts/" + id, payload);
+  const { data } = await request.post("/posts/update/" + id, payload);
   return data;
 };
