@@ -12,7 +12,6 @@ export const createUser = async (payload: any) => {
 };
 
 export const userLogin = async (payload: any) => {
-  console.log(payload)
   const { data } = await request.post("auth/signin", payload);
   return data;
 };

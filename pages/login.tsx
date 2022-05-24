@@ -12,7 +12,6 @@ export default function Login() {
   const onSubmit: SubmitHandler<any> = async data => {
     try {
       const response = await userLogin(data);
-      console.log(response)
       toast.success("Create Successfully");
       setCookies('token', response.token);
       router.push("/")
@@ -20,7 +19,6 @@ export default function Login() {
     } catch (error) {
       toast.error("Credentials are not correct");
     }
-    
 
   };
   return (
