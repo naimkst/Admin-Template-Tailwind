@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { ToastContainer, toast } from "react-toastify";
-import { getContentData, postFormData, editContent } from "../../service/post";
+import { useForm, SubmitHandler, useWatch } from "react-hook-form";
+import { toast } from "react-toastify";
+import { getContentData, editContent } from "../../service/post";
 import { useRouter } from "next/router";
 
 export default function EditPost(): any {
@@ -16,12 +16,14 @@ export default function EditPost(): any {
     register,
     handleSubmit,
     reset,
+    getFieldState,
     formState: { errors },
   } = useForm();
 
   const onSubmit: SubmitHandler<any> = async (data: any) => {
     setWaiting(true);
     setButtonHide(false);
+    console.log(formImage);
     const formData: any = new FormData();
     console.log(data.image);
     formData.append("title", data.title);
@@ -30,28 +32,27 @@ export default function EditPost(): any {
     formData.append("publish", data.publish);
     formData.append("authorId", 1);
     const response = await editContent(currentRoute, formData);
-    toast.success("Create Successfully");
+    toast.success("Update Successfully");
     setImageUrl(false);
     setWaiting(false);
     setButtonHide(true);
   };
 
   const currentRoute = router.query.id;
-  console.log(currentRoute);
 
   const getData = async (id: any) => {
     const response = await getContentData(currentRoute);
-    console.log(response);
     setMyForm(response);
+    reset(response);
   };
 
   useEffect(() => {
     getData(currentRoute);
-  }, [currentRoute]);
+  }, [currentRoute, setImage]);
 
   return (
     <>
-      {JSON.stringify(myForm)}
+      {/* {JSON.stringify(myForm.image)} */}
       <div className="max-w-6xl bg-white p-16">
         <h2 className="text-2xl mb-10 font-bold">Add Blog Post</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -68,7 +69,7 @@ export default function EditPost(): any {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Blog Title Here"
               required
-              defaultValue={myForm.title}
+              // defaultValue={myForm.title}
               {...register("title", {
                 required: "Title is required",
                 minLength: {
@@ -97,12 +98,11 @@ export default function EditPost(): any {
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Here is your blog coneten.."
               required
-              defaultValue={myForm.content}
               {...register("content", {
                 required: "Content is required",
                 minLength: {
                   value: 10,
-                  message: "Content must be at least 10 characters",
+                  message: "Image must be at least 10 characters",
                 },
               })}
             />
@@ -119,38 +119,20 @@ export default function EditPost(): any {
             </label>
             <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
               <div className="space-y-1 text-center">
-
-                { !setImage && 
+                {!setImage && (
                   <img
                     className="inline-block h-44 w-44 mb-6  ring-2 ring-white"
-                    src={`http://localhost:3000/posts/post-image/${myForm.image}`}
+                    src={`http://localhost:3000/posts/post-image/${myForm?.image}`}
                     alt=""
                   />
-                }
+                )}
 
-                {setImage ? (
+                {setImage && (
                   <img
                     className="inline-block h-44 w-44 mb-6  ring-2 ring-white"
                     src={setImage}
                     alt=""
                   />
-                ) : (
-                  <svg
-                    className="mx-auto h-12 w-12 text-gray-400"
-                    stroke="currentColor"
-                    fill="none"
-                    viewBox="0 0 48 48"
-                    aria-hidden="true"
-                  >
-                    {setImage ? (
-                      ""
-                    ) : (
-                      <path
-                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                        strokeWidth="2"
-                      ></path>
-                    )}
-                  </svg>
                 )}
 
                 <div className="flex text-sm text-gray-600">
@@ -159,13 +141,13 @@ export default function EditPost(): any {
                     className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                   >
                     <span>Upload a file</span>
+
                     <input
                       id="file-upload"
                       type="file"
                       className="sr-only"
-                      defaultValue=""
                       {...register("image", {
-                        required: "Content is required",
+                        // required: "Image is required",
                       })}
                       onChange={(event: any) => {
                         setFromImage(event.target.files[0]);
@@ -206,9 +188,8 @@ export default function EditPost(): any {
                 id="country"
                 autoComplete="country-name"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                defaultValue={ myForm.categories }
                 {...register("categories", {
-                  required: "Category is required",
+                  // required: "Category is required",
                 })}
               >
                 <option value="">United States</option>
@@ -233,7 +214,6 @@ export default function EditPost(): any {
                 id="country"
                 autoComplete="country-name"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                defaultValue="{ myForm.publish }"
                 {...register("publish", {
                   required: "Status is required",
                 })}

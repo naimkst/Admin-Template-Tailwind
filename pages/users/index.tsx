@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { getAlltData, deleteById } from "../../service/post";
+import { getUser, deleteById } from "../../service/user";
 import React, { useEffect, useState } from "react";
 import urlJoin from "url-join";
 import { ToastContainer, toast } from "react-toastify";
 
-export default function Posts() {
-  const [posts, setPosts] = useState([]);
-  const [page, setPage] = useState(1);
+export default function Users() {
+  const [users, setUsers] = useState([]);
   const [totalPage, setTotalPage] = useState(0);
   const [curentPage, setCurrentPage] = useState(0);
   const [showPerPage, setshowPerPage] = useState(5);
@@ -15,8 +14,8 @@ export default function Posts() {
 
   const getData = async (quantity: number, perpage: number, search: string) => {
     setLoading(true);
-    const response = await getAlltData(quantity, perpage, search);
-    setPosts(response.data);
+    const response = await getUser(quantity, perpage, search);
+    setUsers(response.data);
     setTotalPage(response.totalPage);
     setLoading(false);
   };
@@ -31,10 +30,10 @@ export default function Posts() {
     getData(curentPage * 5, showPerPage, search);
   }, [curentPage, showPerPage, search]);
 
-  if(posts.length > 0){
+  if(users?.length > 0){
     return (
       <>
-        {/* { JSON.stringify(router)} */}
+        {/* { JSON.stringify(users)} */}
         <div className="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
           <div className="sm:flex items-center justify-between">
             <div className="flex items-center">
@@ -63,7 +62,7 @@ export default function Posts() {
                 </div>
               </a>
             </div>
-            <Link href="/posts/add-post">
+            <Link href="/users/add-user">
               <button className="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
                 <p className="text-sm font-medium leading-none text-white">
                   Add Task
@@ -130,28 +129,28 @@ export default function Posts() {
                       </tr>
                     </thead>
                     <tbody className="text-gray-600 text-sm font-light">
-                      {posts?.map((post: any) => {
+                      {users?.map((user: any) => {
                         const list: any = (
                           <tr
-                            key={post.id}
+                            key={user?.id}
                             className="border-b border-gray-200 hover:bg-gray-100"
                           >
                             <td className="py-3 px-6 text-left whitespace-nowrap">
                               <div className="flex items-center">
-                                <div className="mr-2">
+                                {/* <div className="mr-2">
                                   <img
                                     src={urlJoin(
                                       "http://localhost:3000",
                                       "posts",
                                       "post-image",
-                                      post.image
+                                      user?.image
                                     )}
                                     width="25"
                                     height="25"
                                     alt=""
                                   />
-                                </div>
-                                <span className="font-medium">{post.title}</span>
+                                </div> */}
+                                <span className="font-medium">{user?.email}</span>
                               </div>
                             </td>
                             <td className="py-3 px-6 text-left">
@@ -159,7 +158,7 @@ export default function Posts() {
                                 <div className="mr-2">
                                   {/* <img className="w-6 h-6 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg" /> */}
                                 </div>
-                                <span>{post.createdAt}</span>
+                                <span>{user?.createdAt}</span>
                               </div>
                             </td>
                             <td className="py-3 px-6 text-center">
@@ -179,7 +178,7 @@ export default function Posts() {
                               </div>
                             </td>
                             <td className="py-3 px-6 text-center">
-                              {post.publish == true ? (
+                              {user.publish == true ? (
                                 <span className="bg-green-500 text-white py-1 px-3 rounded-full text-xs">
                                   Active
                                 </span>
@@ -214,7 +213,7 @@ export default function Posts() {
                                 </div>
   
                                 <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                  <Link href={`/posts/${post.id}`}>
+                                  <Link href={`/users/${user.id}`}>
                                   <a href="">
                                   <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -235,7 +234,7 @@ export default function Posts() {
   
                                 <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                                   <a
-                                    onClick={() => deleteHandle(post.id)}
+                                    onClick={() => deleteHandle(user.id)}
                                     href="#"
                                   >
                                     <svg
@@ -322,6 +321,8 @@ export default function Posts() {
             </Link>
           </div>
         </div>
+      
+      
         <div className="flex justify-center mt-5">
             <svg
               role="status"

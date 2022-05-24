@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
-import { getContentData, editContent, postFormData } from "../../service/post";
+import { createCategory, getCategoryData } from "../../service/category";
+import { useRouter } from 'next/router'
 
-export default function addPost(): any {
-  const [setImage, setImageUrl] = useState(false);
-  const [formImage, setFromImage] = useState();
+
+export default function editCategory(): any {
+  const router = useRouter();
+  const curentRoute = router.query.id;
   const [buttonHide, setButtonHide] = useState(true);
   const [waitingHide, setWaiting] = useState(false);
+  const [setImage, setImageUrl] = useState(false);
+  const [formImage, setFromImage] = useState();
+  const [ getCategory, setCategory ] = useState({});
 
   const {
     register,
@@ -20,87 +25,97 @@ export default function addPost(): any {
     setWaiting(true);
     setButtonHide(false);
 
+    console.log(formImage);
     const formData: any = new FormData();
-    console.log(data.image);
-    formData.append("title", data.title);
-    formData.append("content", data.content);
+    formData.append("categoryName", data.categoryName);
+    formData.append("status", data.status);
     formData.append("image", formImage);
-    formData.append("publish", data.publish);
-    formData.append("authorId", 1);
 
-    const response = await postFormData(formData);
-
+    const response = await createCategory(formData);
+    console.log(response)
     toast.success("Create Successfully");
     reset();
-    setImageUrl(false);
     setWaiting(false);
     setButtonHide(true);
+    router.push('/categories')
   };
+  const getCatData = async () => {
+    const response = await getCategoryData(curentRoute);
+    console.log(response)
+    setCategory(response);
+    reset(response);
+    setFromImage(response.image);
+    setImageUrl(response.image);
+  }
+
+  useEffect(() => {
+    getCatData();
+  }, [curentRoute]);
 
   return (
     <>
+    { JSON.stringify(getCategory)}
       <div className="max-w-6xl bg-white p-16">
-        <h2 className="text-2xl mb-10 font-bold">Add Blog Post</h2>
+        <h2 className="text-2xl mb-10 font-bold">Add Category</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
+
+        <div className="grid grid-cols-2 gap-4 mb-6">
           <div>
             <label
               htmlFor="first_name"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Post Title
+              Name
             </label>
             <input
               type="text"
               id="first_name"
+              
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Blog Title Here"
+              placeholder="First Name"
               required
-              defaultValue=""
-              {...register("title", {
+              {...register("categoryName", {
                 required: "Title is required",
                 minLength: {
-                  value: 5,
-                  message: "Title must be at least 5 characters",
+                  value: 2,
+                  message: "Title must be at least 2 characters",
                 },
               })}
             />
-            {errors.title && (
+            {errors.categoryName && (
               <p className="mt-2 text-sm text-red-500">
-                {errors.title?.message}
-              </p>
-            )}
-          </div>
-
-          <div className="mb-6 mt-6">
-            <label
-              htmlFor="email"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-            >
-              Blog Description
-            </label>
-            <textarea
-              rows="5"
-              id="email"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Here is your blog coneten.."
-              required
-              defaultValue=""
-              {...register("content", {
-                required: "Content is required",
-                minLength: {
-                  value: 10,
-                  message: "Content must be at least 10 characters",
-                },
-              })}
-            />
-            {errors.content && (
-              <p className="mt-2 text-sm text-red-500">
-                {errors.content?.message}
+                {errors.categoryName?.message}
               </p>
             )}
           </div>
 
           <div>
+          <label
+              htmlFor="laname"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            >
+              Status
+            </label>
+            <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="state"
+            {...register("status", {
+              required: "Status is required",
+            })}
+            >
+              <option value="">--- Select Your Status ---</option>
+              <option value="0">False</option>
+              <option value="1">True</option>
+            </select>
+
+            {errors.status && (
+              <p className="mt-2 text-sm text-red-500">
+                {errors.status?.message}
+              </p>
+            )}
+          </div>
+        </div>
+
+
+        <div>
             <label className="block text-sm font-medium text-gray-700">
               Thumbnail
             </label>
@@ -109,7 +124,7 @@ export default function addPost(): any {
                 {setImage ? (
                   <img
                     className="inline-block h-44 w-44 mb-6  ring-2 ring-white"
-                    src={setImage}
+                    src={`http://localhost:3000/posts/post-image/${setImage}`}
                     alt=""
                   />
                 ) : (
@@ -143,7 +158,7 @@ export default function addPost(): any {
                       className="sr-only"
                       defaultValue=""
                       {...register("image", {
-                        required: "Content is required",
+                        required: "Image is required",
                       })}
                       onChange={(event: any) => {
                         setFromImage(event.target.files[0]);
@@ -170,64 +185,6 @@ export default function addPost(): any {
                     {errors.image?.message}
                   </p>
                 )}
-          </div>
-
-          <div className="grid gap-6 mb-6 lg:grid-cols-2 mt-6">
-            <div>
-              <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >
-                Categories
-              </label>
-              <select
-                id="country"
-                autoComplete="country-name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                defaultValue=""
-                {...register("categories", {
-                  required: "Category is required",
-                })}
-              >
-                <option value="">United States</option>
-                <option value="1">Canada</option>
-                <option value="2">Mexico</option>
-              </select>
-              {errors.categories && (
-                <p className="mt-2 text-sm text-red-500">
-                  {errors.categories?.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label
-                htmlFor="email"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-              >
-                Status
-              </label>
-              <select
-                id="country"
-                autoComplete="country-name"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                defaultValue=""
-                {...register("publish", {
-                  required: "Status is required",
-                })}
-              >
-                <option value="">Seletct Status</option>
-                {/* @ts-ignore */}
-                <option value="1">True</option>
-                {/* @ts-ignore */}
-                <option value="0">False</option>
-              </select>
-              {errors.status && (
-                <p className="mt-2 text-sm text-red-500">
-                  {errors.status?.message}
-                </p>
-              )}
-            </div>
           </div>
 
           <div>
