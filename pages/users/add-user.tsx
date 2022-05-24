@@ -18,14 +18,20 @@ export default function addUser(): any {
   const onSubmit: SubmitHandler<any> = async (data) => {
     setWaiting(true);
     setButtonHide(false);
+    console.log(data)
 
-    const formData: any = new FormData();
-    formData.append("fname", data.fname);
-    formData.append("lname", data.lname);
-    formData.append("bio", data.bio);
-    formData.append("publish", true);
+    // const formData: any = new FormData();
+    // formData.append("fname", data.fname);
+    // formData.append("lname", data.lname);
+    // formData.append("email", data.email);
+    // formData.append("password", data.password);
+    // formData.append("bio", data.bio);
+    // formData.append("status", "1");
 
-    const response = await createUser(data);
+    const response = await createUser({ 
+      ...data,
+      status: "1"
+    });
     toast.success("Create Successfully");
     reset();
     setWaiting(false);

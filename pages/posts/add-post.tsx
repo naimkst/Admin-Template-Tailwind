@@ -2,12 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import { getContentData, editContent, postFormData } from "../../service/post";
+import { getAllCategory } from "../../service/category";
+import { Key } from "heroicons-react";
+import { useRouter } from 'next/router'
 
 export default function addPost(): any {
+  const router = useRouter()
   const [setImage, setImageUrl] = useState(false);
   const [formImage, setFromImage] = useState();
   const [buttonHide, setButtonHide] = useState(true);
   const [waitingHide, setWaiting] = useState(false);
+  const [ getCat, setAllCat ] = useState([]);
 
   const {
     register,
@@ -35,10 +40,21 @@ export default function addPost(): any {
     setImageUrl(false);
     setWaiting(false);
     setButtonHide(true);
+    router.push('/posts')
   };
+
+  const getAllCat = async () => {
+    const response = await getAllCategory();
+    setAllCat(response);
+  }
+
+  useEffect(() => {
+    getAllCat();
+  }, [])
 
   return (
     <>
+    {/* { JSON.stringify(getCat)} */}
       <div className="max-w-6xl bg-white p-16">
         <h2 className="text-2xl mb-10 font-bold">Add Blog Post</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -189,9 +205,13 @@ export default function addPost(): any {
                   required: "Category is required",
                 })}
               >
-                <option value="">United States</option>
-                <option value="1">Canada</option>
-                <option value="2">Mexico</option>
+                <option value="">Select Category</option>
+                { 
+                  getCat.map( (cat: any) => (
+                    <option key={cat.id} value={ cat.id }>{ cat.categoryName }</option>
+                  ))
+                }
+                
               </select>
               {errors.categories && (
                 <p className="mt-2 text-sm text-red-500">

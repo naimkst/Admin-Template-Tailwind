@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
-import { createCategory, getCategoryData } from "../../service/category";
+import { updateData, getCategoryData } from "../../service/category";
 import { useRouter } from 'next/router'
 
 
@@ -11,7 +11,7 @@ export default function editCategory(): any {
   const [buttonHide, setButtonHide] = useState(true);
   const [waitingHide, setWaiting] = useState(false);
   const [setImage, setImageUrl] = useState(false);
-  const [formImage, setFromImage] = useState();
+  const [responseImage, setResponseImage] = useState();
   const [ getCategory, setCategory ] = useState({});
 
   const {
@@ -25,15 +25,15 @@ export default function editCategory(): any {
     setWaiting(true);
     setButtonHide(false);
 
-    console.log(formImage);
+    console.log(responseImage);
     const formData: any = new FormData();
     formData.append("categoryName", data.categoryName);
     formData.append("status", data.status);
-    formData.append("image", formImage);
+    formData.append("image", responseImage);
 
-    const response = await createCategory(formData);
+    const response = await updateData(curentRoute, formData);
     console.log(response)
-    toast.success("Create Successfully");
+    toast.success("Update Successfully");
     reset();
     setWaiting(false);
     setButtonHide(true);
@@ -44,8 +44,8 @@ export default function editCategory(): any {
     console.log(response)
     setCategory(response);
     reset(response);
-    setFromImage(response.image);
-    setImageUrl(response.image);
+    // setFromImage(response.image);
+    setResponseImage(response.image);
   }
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function editCategory(): any {
 
   return (
     <>
-    { JSON.stringify(getCategory)}
+    { JSON.stringify(getCategory.image)}
       <div className="max-w-6xl bg-white p-16">
         <h2 className="text-2xl mb-10 font-bold">Add Category</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -121,29 +121,18 @@ export default function editCategory(): any {
             </label>
             <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
               <div className="space-y-1 text-center">
-                {setImage ? (
+                { setImage ? (
                   <img
                     className="inline-block h-44 w-44 mb-6  ring-2 ring-white"
-                    src={`http://localhost:3000/posts/post-image/${setImage}`}
+                    src={setImage}
                     alt=""
                   />
                 ) : (
-                  <svg
-                    className="mx-auto h-12 w-12 text-gray-400"
-                    stroke="currentColor"
-                    fill="none"
-                    viewBox="0 0 48 48"
-                    aria-hidden="true"
-                  >
-                    {setImage ? (
-                      ""
-                    ) : (
-                      <path
-                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                        strokeWidth="2"
-                      ></path>
-                    )}
-                  </svg>
+                  <img
+                  className="inline-block h-44 w-44 mb-6  ring-2 ring-white"
+                  src={`http://localhost:3000/posts/post-image/${getCategory.image}`}
+                  alt=""
+                  />
                 )}
 
                 <div className="flex text-sm text-gray-600">
@@ -158,10 +147,10 @@ export default function editCategory(): any {
                       className="sr-only"
                       defaultValue=""
                       {...register("image", {
-                        required: "Image is required",
+                        // required: "Image is required",
                       })}
                       onChange={(event: any) => {
-                        setFromImage(event.target.files[0]);
+                        setResponseImage(event.target.files[0]);
                         var reader = new FileReader();
                         reader.onload = function (e) {
                           setImageUrl(e.currentTarget.result);
