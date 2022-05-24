@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { userLogin } from "../service/user";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from 'next/router'
 import { setCookies } from 'cookies-next';
+import { useDispatch } from 'react-redux';
+import { addUser } from "../redux/user";
 
 export default function Login() {
   const router = useRouter()
+  const dispatch = useDispatch();
+  const [ loginData, setLogindata ] = useState();
 
   const { register, handleSubmit } = useForm<any>();
   const onSubmit: SubmitHandler<any> = async data => {
@@ -14,6 +18,8 @@ export default function Login() {
       const response = await userLogin(data);
       toast.success("Create Successfully");
       setCookies('token', response.token);
+      setLogindata(response.user);
+      dispatch(addUser(response.user));
       router.push("/")
 
     } catch (error) {
@@ -21,6 +27,10 @@ export default function Login() {
     }
 
   };
+
+  useEffect(() => {
+    // dispatch(addUser(loginData));
+  }, []);
   return (
     <>
     <form  onSubmit={handleSubmit(onSubmit)}>

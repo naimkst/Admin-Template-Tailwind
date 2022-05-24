@@ -2,11 +2,13 @@ import React, { useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { removeCookies } from 'cookies-next';
-
+import { useSelector } from 'react-redux'
 
 export default function Sidebar() {
-  const router = useRouter()
+  const router = useRouter();
+  const user = useSelector((state: any) => state.user.users);
 
+  console.log("Redux Data", user)
   const handleLogout = () => {
     removeCookies('token');
     router.push('/login');
@@ -24,7 +26,7 @@ export default function Sidebar() {
 
           <div className="mt-8 text-center">
             <img src="https://tailus.io/sources/blocks/stats-cards/preview/images/second_user.webp" alt="" className="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28" />
-            <h5 className="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">Cynthia J. Watts</h5>
+            <h5 className="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">{ user?.fname } { user?.lname }</h5>
             <span className="hidden text-gray-400 lg:block">Admin</span>
           </div>
 
