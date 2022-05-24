@@ -3,6 +3,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import { updateData, getCategoryData } from "../../service/category";
 import { useRouter } from 'next/router'
+import { GetServerSideProps } from "next";
+import { ssrAuthCheck } from "../../middleware";
 
 
 export default function editCategory(): any {
@@ -193,3 +195,9 @@ export default function editCategory(): any {
     </>
   );
 }
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+  await ssrAuthCheck(ctx);
+  return {
+    props: {},
+  };
+};

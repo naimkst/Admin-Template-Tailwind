@@ -3,6 +3,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import { createUser } from "../../service/user";
 import Router from 'next/router'
+import { GetServerSideProps } from "next";
+import { ssrAuthCheck } from "../../middleware";
 
 export default function addUser(): any {
   const [buttonHide, setButtonHide] = useState(true);
@@ -213,3 +215,9 @@ export default function addUser(): any {
     </>
   );
 }
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+  await ssrAuthCheck(ctx);
+  return {
+    props: {},
+  };
+};

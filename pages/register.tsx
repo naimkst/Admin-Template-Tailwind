@@ -8,7 +8,10 @@ export default function Register() {
   const { register, handleSubmit, getValues, reset, formState: { errors }, } = useForm<any>();
   const onSubmit: SubmitHandler<any> = async data => {
     try {
-      const response = await createUser(data);
+      const response = await createUser({
+        ...data,
+        status: "1"
+      });
       toast.success("Create Successfully");
       reset();
     } catch (error) {

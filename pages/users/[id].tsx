@@ -3,6 +3,8 @@ import { ToastContainer, toast } from "react-toastify";
 import { getUserData, updateData } from "../../service/user";
 import { useRouter } from 'next/router'
 import { useForm, SubmitHandler } from "react-hook-form";
+import { GetServerSideProps } from "next";
+import { ssrAuthCheck } from "../../middleware";
 
 export default function editUser() {
 
@@ -208,3 +210,9 @@ export default function editUser() {
     </>
   );
 }
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+  await ssrAuthCheck(ctx);
+  return {
+    props: {},
+  };
+};

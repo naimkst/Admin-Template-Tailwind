@@ -3,6 +3,8 @@ import { getAlltData, deleteById } from "../../service/post";
 import React, { useEffect, useState } from "react";
 import urlJoin from "url-join";
 import { ToastContainer, toast } from "react-toastify";
+import { GetServerSideProps } from "next";
+import { ssrAuthCheck } from "../../middleware";
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
@@ -284,3 +286,9 @@ export default function Posts() {
   
 
 }
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+  await ssrAuthCheck(ctx);
+  return {
+    props: {},
+  };
+};

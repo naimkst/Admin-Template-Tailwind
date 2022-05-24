@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { userLogin } from "../service/user";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from 'next/router'
+import { setCookies } from 'cookies-next';
 
 export default function Login() {
   const router = useRouter()
@@ -13,6 +14,7 @@ export default function Login() {
       const response = await userLogin(data);
       console.log(response)
       toast.success("Create Successfully");
+      setCookies('token', response.token);
       router.push("/")
 
     } catch (error) {

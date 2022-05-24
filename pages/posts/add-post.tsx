@@ -5,6 +5,8 @@ import { getContentData, editContent, postFormData } from "../../service/post";
 import { getAllCategory } from "../../service/category";
 import { Key } from "heroicons-react";
 import { useRouter } from 'next/router'
+import { GetServerSideProps } from "next";
+import { ssrAuthCheck } from "../../middleware";
 
 export default function addPost(): any {
   const router = useRouter()
@@ -267,3 +269,9 @@ export default function addPost(): any {
     </>
   );
 }
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+  await ssrAuthCheck(ctx);
+  return {
+    props: {},
+  };
+};

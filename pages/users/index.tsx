@@ -3,6 +3,8 @@ import { getUser, deleteById } from "../../service/user";
 import React, { useEffect, useState } from "react";
 import urlJoin from "url-join";
 import { ToastContainer, toast } from "react-toastify";
+import { GetServerSideProps } from "next";
+import { ssrAuthCheck } from "../../middleware";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -284,3 +286,10 @@ export default function Users() {
  
 
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+  await ssrAuthCheck(ctx);
+  return {
+    props: {},
+  };
+};

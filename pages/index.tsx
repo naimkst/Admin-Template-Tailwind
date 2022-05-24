@@ -1,3 +1,5 @@
+import { GetServerSideProps } from "next";
+import { ssrAuthCheck } from "../middleware";
 
 export default function Home() {
   return (
@@ -270,3 +272,10 @@ export default function Home() {
     </>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+  await ssrAuthCheck(ctx);
+  return {
+    props: {},
+  };
+};

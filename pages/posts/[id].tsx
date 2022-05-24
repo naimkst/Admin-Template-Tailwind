@@ -3,6 +3,8 @@ import { useForm, SubmitHandler, useWatch } from "react-hook-form";
 import { toast } from "react-toastify";
 import { getContentData, editContent } from "../../service/post";
 import { useRouter } from "next/router";
+import { ssrAuthCheck } from "../../middleware";
+import { GetServerSideProps } from "next";
 
 export default function EditPost(): any {
   const router = useRouter();
@@ -247,3 +249,9 @@ export default function EditPost(): any {
     </>
   );
 }
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+  await ssrAuthCheck(ctx);
+  return {
+    props: {},
+  };
+};

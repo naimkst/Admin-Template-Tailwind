@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getCategory, deleteById } from "../../service/category";
 import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import { GetServerSideProps } from "next";
+import { ssrAuthCheck } from "../../middleware";
 
 export default function Categories() {
   const [category, setCategory] = useState([]);
@@ -279,3 +281,9 @@ export default function Categories() {
   
 
 }
+export const getServerSideProps: GetServerSideProps = async (ctx: any) => {
+  await ssrAuthCheck(ctx);
+  return {
+    props: {},
+  };
+};
