@@ -129,6 +129,72 @@ export default function Sidebar() {
                       </a>
                     </li>
                   </Link>
+
+                  <Link href={"/home/testimonial-section"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Testimonail Section
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/home/testimonial"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Add Testimonails
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/home/creative-minds"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Add Creative Minds
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/home/counter"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Add Counter
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/home/amazon-seller-section"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Amazon Seller Section
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/home/amazon-seller"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Add Amazon Seller
+                      </a>
+                    </li>
+                  </Link>
                 </ul>
               )}
             </li>
