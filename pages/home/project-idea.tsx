@@ -7,7 +7,11 @@ import { ssrAuthCheck } from "../../middleware";
 import { useQuery } from "@tanstack/react-query";
 import Loading from "../../components/Loading";
 import request from "../../lib/request";
-import { usePhiloshopyUpdate } from "../../service/home";
+import {
+  homePortfolioSectionUpdate,
+  homeProjectUpdate,
+  useHomeUpdate,
+} from "../../service/home";
 
 export default function homeHeroSection(): any {
   const router = useRouter();
@@ -24,24 +28,24 @@ export default function homeHeroSection(): any {
     formState: { errors },
   } = useForm();
 
+  useEffect(() => {}, [responseData]);
   const {
     isLoading: loadingStatus,
     data,
     isSuccess,
     mutate,
     mutateAsync,
-  } = usePhiloshopyUpdate();
+  } = homeProjectUpdate();
 
   const onSubmit: SubmitHandler<any> = async (data) => {
     setWaiting(true);
     setButtonHide(false);
     const formData: any = new FormData();
-    formData.append("portfolioSlug", data.portfolioSlug);
-    formData.append("portfolioTitle", data.portfolioTitle);
+    formData.append("projectTitle", data.projectTitle);
+    formData.append("projectDescription", data.projectDescription);
     formData.append("image", formImage);
-    formData.append("portfolioDescription", data.portfolioDescription);
-    formData.append("portfolioUrlText", data.portfolioUrlText);
-    formData.append("portfolioUrLink", data.portfolioUrLink);
+    formData.append("projectUrlText", data.projectUrlText);
+    formData.append("projectUrLink", data.projectUrLink);
     mutateAsync(formData);
     toast.success("Create Successfully");
     reset();
@@ -51,14 +55,11 @@ export default function homeHeroSection(): any {
   };
 
   const { isLoading }: any = useQuery(["repoData"], async () => {
-    const { data } = await request.get("/home/philosophy-section/1");
-    console.log(data);
+    const { data } = await request.get("/home/project/1");
     reset(data);
     setResponseData(data);
     return data;
   });
-
-  useEffect(() => {}, [responseData]);
 
   if (isLoading) return <Loading />;
 
@@ -66,128 +67,54 @@ export default function homeHeroSection(): any {
     <>
       {/* { JSON.stringify(getCat)} */}
       <div className="max-w-6xl bg-white p-16">
-        <h2 className="text-2xl mb-10 font-bold">Our Philosophy</h2>
+        <h2 className="text-2xl mb-10 font-bold">Project Idea</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-            >
-              Philosophy Title
-            </label>
-            <input
-              type="text"
-              id="first_name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Hero Title.."
-              required
-              defaultValue=""
-              {...register("philosophyTitle", {
-                required: "Field is required",
-              })}
-            />
-            {errors.philosophyTitle && (
-              <p className="mt-2 text-sm text-red-500">
-                {errors.philosophyTitle?.message}
-              </p>
-            )}
-          </div>
-
           <div className="my-5">
             <label
               htmlFor="first_name"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Philosophy Slug
+              Title
             </label>
             <input
               type="text"
               id="first_name"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Philosophy Slug"
+              placeholder="Title.."
               required
               defaultValue=""
-              {...register("philosophySlug", {
-                required: "Field is required",
+              {...register("projectTitle", {
+                required: "This field is required",
               })}
             />
-            {errors.philosophySlug && (
+            {errors.projectTitle && (
               <p className="mt-2 text-sm text-red-500">
-                {errors.philosophySlug?.message}
+                {errors.projectTitle?.message}
               </p>
             )}
           </div>
 
-          <div className="my-5">
+          <div className="mb-6 mt-6">
             <label
-              htmlFor="first_name"
+              htmlFor="email"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Philosophy Shot Desc
-            </label>
-            <input
-              type="text"
-              id="first_name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Philosophy Shot Desc.."
-              required
-              defaultValue=""
-              {...register("philosophyShotDesc", {
-                required: "Field is required",
-              })}
-            />
-            {errors.philosophyShotDesc && (
-              <p className="mt-2 text-sm text-red-500">
-                {errors.philosophyShotDesc?.message}
-              </p>
-            )}
-          </div>
-
-          <div className="my-5">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-            >
-              Philosophy List Title
-            </label>
-            <input
-              type="text"
-              id="first_name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Blog Title Here"
-              required
-              defaultValue=""
-              {...register("philosophyListTitle", {
-                required: "Philosophy List Title is required",
-              })}
-            />
-            {errors.philosophyListTitle && (
-              <p className="mt-2 text-sm text-red-500">
-                {errors.philosophyListTitle?.message}
-              </p>
-            )}
-          </div>
-
-          <div className="my-5">
-            <label
-              htmlFor="first_name"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-            >
-              Philosophy List
+              Description
             </label>
             <textarea
-              id="first_name"
+              rows={5}
+              id="description"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Blog Title Here"
+              placeholder="Description here.."
               required
               defaultValue=""
-              {...register("philosophyLists", {
-                required: "Field is required",
+              {...register("projectDescription", {
+                required: "This filed is required",
               })}
             />
-            {errors.philosophyLists && (
+            {errors.projectDescription && (
               <p className="mt-2 text-sm text-red-500">
-                {errors.philosophyLists?.message}
+                {errors.projectDescription?.message}
               </p>
             )}
           </div>
@@ -197,22 +124,22 @@ export default function homeHeroSection(): any {
               htmlFor="first_name"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Philosophy Button Text
+              Button Text
             </label>
             <input
               type="text"
               id="first_name"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Blog Title Here"
+              placeholder="Button Text"
               required
               defaultValue=""
-              {...register("philosophyButtonText", {
-                required: "Field is required",
+              {...register("projectUrlText", {
+                required: "This field is required",
               })}
             />
-            {errors.philosophyButtonText && (
+            {errors.projectUrlText && (
               <p className="mt-2 text-sm text-red-500">
-                {errors.philosophyButtonText?.message}
+                {errors.projectUrlText?.message}
               </p>
             )}
           </div>
@@ -222,22 +149,22 @@ export default function homeHeroSection(): any {
               htmlFor="first_name"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Philosophy Button Link
+              Button Link
             </label>
             <input
               type="text"
               id="first_name"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Blog Title Here"
+              placeholder="Button Link"
               required
               defaultValue=""
-              {...register("philosophyButtonUrl", {
-                required: "Field is required",
+              {...register("projectUrLink", {
+                required: "This field is required",
               })}
             />
-            {errors.philosophyButtonUrl && (
+            {errors.projectUrLink && (
               <p className="mt-2 text-sm text-red-500">
-                {errors.philosophyButtonUrl?.message}
+                {errors.projectUrLink?.message}
               </p>
             )}
           </div>

@@ -167,6 +167,50 @@ export const homeAmazonSellerUpdate = (id: any): any => {
     mutateAsync,
   };
 };
+export const homePortfolioSectionUpdate = (): any => {
+  const { mutate, isLoading, isError, isSuccess, mutateAsync, data } =
+    useMutation((data) => request.post(`/home/update-portfolio/1`, data));
+  return {
+    isLoading,
+    isSuccess,
+    data,
+    mutate,
+    mutateAsync,
+  };
+};
+export const homeProjectUpdate = (): any => {
+  const { mutate, isLoading, isError, isSuccess, mutateAsync, data } =
+    useMutation((data) => request.post(`/home/update-project/1`, data));
+  return {
+    isLoading,
+    isSuccess,
+    data,
+    mutate,
+    mutateAsync,
+  };
+};
+export const homeBrandCreate = (): any => {
+  const { mutate, isLoading, isError, isSuccess, mutateAsync, data } =
+    useMutation((data) => request.post(`/home/create-brand`, data));
+  return {
+    isLoading,
+    isSuccess,
+    data,
+    mutate,
+    mutateAsync,
+  };
+};
+export const homeBrandUpdate = (id: any): any => {
+  const { mutate, isLoading, isError, isSuccess, mutateAsync, data } =
+    useMutation((data) => request.post(`/home/update-brand/${id}`, data));
+  return {
+    isLoading,
+    isSuccess,
+    data,
+    mutate,
+    mutateAsync,
+  };
+};
 // export const postFormData = async (payload: any) => {
 //   const { data } = await request.post("/posts", payload);
 //   return data;

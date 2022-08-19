@@ -195,6 +195,38 @@ export default function Sidebar() {
                       </a>
                     </li>
                   </Link>
+                  <Link href={"/home/our-portfolio"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Our Portfolio
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/home/project-idea"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Project Idea
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/home/our-brand"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Our Brand
+                      </a>
+                    </li>
+                  </Link>
                 </ul>
               )}
             </li>
