@@ -52,7 +52,7 @@ export default function Sidebar() {
             <span className="hidden text-gray-400 lg:block">Admin</span>
           </div>
 
-          <ul className="space-y-2 tracking-wide mt-8">
+          <ul className="space-y-2 tracking-wide mt-8 max-h-[500px] overflow-scroll">
             <Link href="/">
               <li onClick={() => menuHandler("dashboard")}>
                 <a
@@ -218,6 +218,236 @@ export default function Sidebar() {
                   </Link>
 
                   <Link href={"/home/our-brand"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Our Brand
+                      </a>
+                    </li>
+                  </Link>
+                </ul>
+              )}
+            </li>
+
+            <li onClick={() => menuHandler("service")}>
+              <Link href={"/service/hero-section"}>
+                <a
+                  href="#"
+                  className={
+                    menu == "service"
+                      ? "relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-gradient-to-r from-sky-600 to-cyan-400"
+                      : "relative px-4 py-3 flex items-center space-x-4 rounded-xl  to-cyan-400"
+                  }
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                    />
+                  </svg>
+                  <span className="group-hover:text-gray-700">Service</span>
+                </a>
+              </Link>
+              {menu == "service" && (
+                <ul className="">
+                  <Link href={"/service/hero-section"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Hero Section
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/amazon-seller-Section"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Add Amazon Section
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/amazon-seller"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Add Amazon Seller
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/services"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Add Services
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/pricing-section"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Pricing Section
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/pricing"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Add Pricing
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/ask-question"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Ask Question
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/ecommerce"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Ecommerce
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/brand-section"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Brand Section
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/brand"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Add Brand
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/testimonial-section"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Testimonail Section
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/testimonial"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Add Testimonails
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/creative-minds"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Add Creative Minds
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/counter"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Add Counter
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/amazon-seller-section"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Amazon Seller Section
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/our-portfolio"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Our Portfolio
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/project-idea"}>
+                    <li className="relative">
+                      <a
+                        href=""
+                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
+                      >
+                        Project Idea
+                      </a>
+                    </li>
+                  </Link>
+
+                  <Link href={"/service/our-brand"}>
                     <li className="relative">
                       <a
                         href=""

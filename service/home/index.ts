@@ -79,6 +79,20 @@ export const homeTestimonialUpdate = (id: any): any => {
   };
 };
 
+export const homeTestimonialDelete = (id: any): any => {
+  const { mutate, isLoading, isError, isSuccess, mutateAsync, data } =
+    useMutation((data) => request.delete(`/home/delete-testimonial/${id}`));
+  console.log(id, data);
+
+  return {
+    isLoading,
+    isSuccess,
+    data,
+    mutate,
+    mutateAsync,
+  };
+};
+
 export const crativeMindCreate = async (data: any) => {
   return request.post("/home/creative-mind", data);
 };

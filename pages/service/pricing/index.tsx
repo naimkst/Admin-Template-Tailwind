@@ -8,23 +8,18 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import request from "../../../lib/request";
 
 export default function Testimonial() {
-  const [posts, setPosts] = useState([]);
-  const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
   const [curentPage, setCurrentPage] = useState(0);
-  const [showPerPage, setshowPerPage] = useState(5);
-  const [search, setSearch] = useState("");
-  const [isLoading, setLoading] = useState(false);
   const [responseData, setResponseData] = useState([]);
 
   const mutation = useMutation((id) => {
-    const data = request.delete(`/home/delete-amazon-seller/${id}`);
+    const data = request.delete(`/service/delete-package/${id}`);
     toast.success("Delete Successfully");
     return data;
   });
 
-  const { isLoading: loading }: any = useQuery(["resTestimonail"], async () => {
-    const { data } = await request.get("/home/amazon-sellers");
+  const { isLoading: loading }: any = useQuery(["packages"], async () => {
+    const { data } = await request.get("/service/all-package");
     console.log(data);
     setResponseData(data);
     return data;
@@ -61,11 +56,9 @@ export default function Testimonial() {
               </div>
             </a>
           </div> */}
-          <Link href="/home/amazon-seller/add">
+          <Link href="/service/pricing/add">
             <button className="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-indigo-700 hover:bg-indigo-600 focus:outline-none rounded">
-              <p className="text-sm font-medium leading-none text-white">
-                Add Task
-              </p>
+              <p className="text-sm font-medium leading-none text-white">Add</p>
             </button>
           </Link>
         </div>
@@ -121,6 +114,7 @@ export default function Testimonial() {
                   <thead>
                     <tr className="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
                       <th className="py-3 px-6 text-left">Name</th>
+                      <th className="py-3 px-6 text-left">Price</th>
                       <th className="py-3 px-6 text-center">Actions</th>
                     </tr>
                   </thead>
@@ -133,23 +127,28 @@ export default function Testimonial() {
                         >
                           <td className="py-3 px-6 text-left whitespace-nowrap">
                             <div className="flex items-center">
-                              <div className="mr-2">
+                              {/* <div className="mr-2">
                                 <img
                                   src={`${process.env.NEXT_PUBLIC_API_URL}/home/images/${post.image}`}
                                   width="25"
                                   height="25"
                                   alt=""
                                 />
-                              </div>
-                              <span className="font-medium">
-                                {post.amazonTitle}
-                              </span>
+                              </div> */}
+                              <span className="font-medium">{post.name}</span>
                             </div>
                           </td>
+
+                          <td className="py-3 px-6 text-left whitespace-nowrap">
+                            <div className="flex items-center">
+                              <span className="font-medium">{post.price}</span>
+                            </div>
+                          </td>
+
                           <td className="py-3 px-6 text-center">
                             <div className="flex item-center justify-center">
                               <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
-                                <Link href={`/home/amazon-seller/${post.id}`}>
+                                <Link href={`/service/pricing/${post.id}`}>
                                   <a href="">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"

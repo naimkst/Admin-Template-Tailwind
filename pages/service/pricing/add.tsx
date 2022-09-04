@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import { Key } from "heroicons-react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
-import { ssrAuthCheck } from "../../middleware";
-import { useQuery } from "@tanstack/react-query";
-import Loading from "../../components/Loading";
-import request from "../../lib/request";
-import { usePhiloshopyUpdate } from "../../service/home";
+import { ssrAuthCheck } from "../../../middleware";
+import {
+  homeBrandCreate,
+  homeCounterAdd,
+  homeTestimonialCreate,
+} from "../../../service/home";
+import { pricingCreate } from "../../../service/service";
 
-export default function homeHeroSection(): any {
+export default function addTestimonial(): any {
   const router = useRouter();
-  const [setImage, setImageUrl] = useState(false);
+  const [setImage, setImageUrl]: any = useState();
   const [formImage, setFromImage] = useState();
   const [buttonHide, setButtonHide] = useState(true);
   const [waitingHide, setWaiting] = useState(false);
-  const [responseData, setResponseData] = useState([]);
 
   const {
     register,
@@ -24,284 +26,201 @@ export default function homeHeroSection(): any {
     formState: { errors },
   } = useForm();
 
-  const {
-    isLoading: loadingStatus,
-    data,
-    isSuccess,
-    mutate,
-    mutateAsync,
-  } = usePhiloshopyUpdate();
+  const { isLoading, data, isSuccess, mutate, mutateAsync } = pricingCreate();
 
   const onSubmit: SubmitHandler<any> = async (data) => {
     setWaiting(true);
     setButtonHide(false);
-    const formData: any = new FormData();
-    formData.append("philosophySlug", data.philosophySlug);
-    formData.append("philosophyTitle", data.philosophyTitle);
-    formData.append("image", formImage);
-    formData.append("philosophyShotDesc", data.philosophyShotDesc);
-    formData.append("philosophyLists", data.philosophyLists);
-    formData.append("philosophyButtonText", data.philosophyButtonText);
-    formData.append("philosophyButtonUrl", data.philosophyButtonUrl);
-    mutateAsync(formData);
+    const response = await mutateAsync(data);
     toast.success("Create Successfully");
     reset();
     setImageUrl(false);
     setWaiting(false);
     setButtonHide(true);
+    router.push("/service/pricing");
   };
 
-  const { isLoading }: any = useQuery(["repoData"], async () => {
-    const { data } = await request.get("/home/philosophy-section/1");
-    console.log(data);
-    reset(data);
-    setResponseData(data);
-    return data;
-  });
-
-  useEffect(() => {}, [responseData]);
-
-  if (isLoading) return <Loading />;
+  useEffect(() => {}, []);
 
   return (
     <>
       {/* { JSON.stringify(getCat)} */}
       <div className="max-w-6xl bg-white p-16">
-        <h2 className="text-2xl mb-10 font-bold">Our Philosophy</h2>
+        <h2 className="text-2xl mb-10 font-bold">Add Brand</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
+          <div className="mb-6 mt-6">
             <label
               htmlFor="first_name"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Philosophy Title
+              Name
             </label>
             <input
               type="text"
               id="first_name"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Hero Title.."
+              placeholder="Type here.."
               required
               defaultValue=""
-              {...register("philosophyTitle", {
+              {...register("name", {
                 required: "Field is required",
               })}
             />
-            {errors.philosophyTitle && (
+            {errors.name && (
               <p className="mt-2 text-sm text-red-500">
-                {errors.philosophyTitle?.message}
+                {errors.name?.message}
               </p>
             )}
           </div>
 
-          <div className="my-5">
+          <div className="mb-6 mt-6">
             <label
               htmlFor="first_name"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Philosophy Slug
+              Starting At
             </label>
             <input
               type="text"
               id="first_name"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Philosophy Slug"
+              placeholder="Type here.."
               required
               defaultValue=""
-              {...register("philosophySlug", {
+              {...register("startingAt", {
                 required: "Field is required",
               })}
             />
-            {errors.philosophySlug && (
+            {errors.startingAt && (
               <p className="mt-2 text-sm text-red-500">
-                {errors.philosophySlug?.message}
+                {errors.startingAt?.message}
               </p>
             )}
           </div>
 
-          <div className="my-5">
+          <div className="mb-6 mt-6">
             <label
               htmlFor="first_name"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Philosophy Shot Desc
+              Price
             </label>
             <input
               type="text"
               id="first_name"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Philosophy Shot Desc.."
+              placeholder="Type here.."
               required
               defaultValue=""
-              {...register("philosophyShotDesc", {
+              {...register("price", {
                 required: "Field is required",
               })}
             />
-            {errors.philosophyShotDesc && (
+            {errors.price && (
               <p className="mt-2 text-sm text-red-500">
-                {errors.philosophyShotDesc?.message}
+                {errors.price?.message}
               </p>
             )}
           </div>
 
-          <div className="my-5">
+          <div className="mb-6 mt-6">
             <label
               htmlFor="first_name"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Philosophy List Title
+              Duration
             </label>
             <input
               type="text"
               id="first_name"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Blog Title Here"
+              placeholder="Type here.."
               required
               defaultValue=""
-              {...register("philosophyListTitle", {
-                required: "Philosophy List Title is required",
+              {...register("duration", {
+                required: "Field is required",
               })}
             />
-            {errors.philosophyListTitle && (
+            {errors.duration && (
               <p className="mt-2 text-sm text-red-500">
-                {errors.philosophyListTitle?.message}
+                {errors.duration?.message}
               </p>
             )}
           </div>
 
-          <div className="my-5">
+          <div className="mb-6 mt-6">
             <label
-              htmlFor="first_name"
+              htmlFor="email"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Philosophy List
+              Description
             </label>
             <textarea
-              id="first_name"
+              rows={5}
+              id="email"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Blog Title Here"
+              placeholder="Description.."
               required
               defaultValue=""
-              {...register("philosophyLists", {
-                required: "Field is required",
+              {...register("descriptionList", {
+                required: "Content is required",
               })}
             />
-            {errors.philosophyLists && (
+            {errors.descriptionList && (
               <p className="mt-2 text-sm text-red-500">
-                {errors.philosophyLists?.message}
+                {errors.descriptionList?.message}
               </p>
             )}
           </div>
 
-          <div className="my-5">
+          <div className="mb-6 mt-6">
             <label
               htmlFor="first_name"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Philosophy Button Text
+              Button URL
             </label>
             <input
               type="text"
               id="first_name"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Blog Title Here"
+              placeholder="Type here.."
               required
               defaultValue=""
-              {...register("philosophyButtonText", {
+              {...register("buttonUrl", {
                 required: "Field is required",
               })}
             />
-            {errors.philosophyButtonText && (
+            {errors.buttonUrl && (
               <p className="mt-2 text-sm text-red-500">
-                {errors.philosophyButtonText?.message}
+                {errors.buttonUrl?.message}
               </p>
             )}
           </div>
 
-          <div className="my-5">
+          <div className="mb-6 mt-6">
             <label
               htmlFor="first_name"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
             >
-              Philosophy Button Link
+              Button Text
             </label>
             <input
               type="text"
               id="first_name"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Blog Title Here"
+              placeholder="Type here.."
               required
               defaultValue=""
-              {...register("philosophyButtonUrl", {
+              {...register("buttonText", {
                 required: "Field is required",
               })}
             />
-            {errors.philosophyButtonUrl && (
+            {errors.buttonText && (
               <p className="mt-2 text-sm text-red-500">
-                {errors.philosophyButtonUrl?.message}
+                {errors.buttonText?.message}
               </p>
             )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Thumbnail
-            </label>
-            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-              <div className="space-y-1 text-center">
-                {!setImage && (
-                  <img
-                    className="inline-block h-44 w-44 mb-6  ring-2 ring-white"
-                    src={`http://localhost:3000/posts/post-image/${responseData?.image}`}
-                    alt=""
-                  />
-                )}
-
-                {setImage && (
-                  <img
-                    className="inline-block h-44 w-44 mb-6  ring-2 ring-white"
-                    src={setImage}
-                    alt=""
-                  />
-                )}
-
-                <div className="flex text-sm text-gray-600">
-                  <label
-                    htmlFor="file-upload"
-                    className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
-                  >
-                    <span>Upload a file</span>
-                    <input
-                      id="file-upload"
-                      type="file"
-                      className="sr-only"
-                      defaultValue=""
-                      {...register("image")}
-                      onChange={(event: any) => {
-                        setFromImage(event.target.files[0]);
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                          setImageUrl(e.currentTarget.result);
-                        };
-                        var url = reader.readAsDataURL(event.target.files[0]);
-                      }}
-                    />
-                  </label>
-                  <p className="pl-1">or drag and drop</p>
-                </div>
-                <p className="text-xs text-gray-500">
-                  PNG, JPG, GIF up to 10MB
-                </p>
-              </div>
-            </div>
-
-            {setImage
-              ? ""
-              : errors.image && (
-                  <p className="mt-2 text-sm text-red-500">
-                    {errors.image?.message}
-                  </p>
-                )}
           </div>
 
           <div>
@@ -314,7 +233,7 @@ export default function homeHeroSection(): any {
               </button>
             )}
             <br />
-            {waitingHide && <progress className="progress w-20"></progress>}
+            {isLoading && <progress className="progress w-20"></progress>}
           </div>
         </form>
       </div>
