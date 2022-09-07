@@ -40,18 +40,6 @@ export default function Sidebar() {
             </a>
           </div>
 
-          <div className="mt-8 text-center">
-            <img
-              src="https://tailus.io/sources/blocks/stats-cards/preview/images/second_user.webp"
-              alt=""
-              className="w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28"
-            />
-            <h5 className="hidden mt-4 text-xl font-semibold text-gray-600 lg:block">
-              {user?.fname} {user?.lname}
-            </h5>
-            <span className="hidden text-gray-400 lg:block">Admin</span>
-          </div>
-
           <ul className="space-y-2 tracking-wide mt-8 max-h-[500px] overflow-scroll">
             <Link href="/">
               <li onClick={() => menuHandler("dashboard")}>
@@ -366,94 +354,6 @@ export default function Sidebar() {
                         className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
                       >
                         Add Brand
-                      </a>
-                    </li>
-                  </Link>
-
-                  <Link href={"/service/testimonial-section"}>
-                    <li className="relative">
-                      <a
-                        href=""
-                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
-                      >
-                        Testimonail Section
-                      </a>
-                    </li>
-                  </Link>
-
-                  <Link href={"/service/testimonial"}>
-                    <li className="relative">
-                      <a
-                        href=""
-                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
-                      >
-                        Add Testimonails
-                      </a>
-                    </li>
-                  </Link>
-
-                  <Link href={"/service/creative-minds"}>
-                    <li className="relative">
-                      <a
-                        href=""
-                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
-                      >
-                        Add Creative Minds
-                      </a>
-                    </li>
-                  </Link>
-
-                  <Link href={"/service/counter"}>
-                    <li className="relative">
-                      <a
-                        href=""
-                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
-                      >
-                        Add Counter
-                      </a>
-                    </li>
-                  </Link>
-
-                  <Link href={"/service/amazon-seller-section"}>
-                    <li className="relative">
-                      <a
-                        href=""
-                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
-                      >
-                        Amazon Seller Section
-                      </a>
-                    </li>
-                  </Link>
-
-                  <Link href={"/service/our-portfolio"}>
-                    <li className="relative">
-                      <a
-                        href=""
-                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
-                      >
-                        Our Portfolio
-                      </a>
-                    </li>
-                  </Link>
-
-                  <Link href={"/service/project-idea"}>
-                    <li className="relative">
-                      <a
-                        href=""
-                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
-                      >
-                        Project Idea
-                      </a>
-                    </li>
-                  </Link>
-
-                  <Link href={"/service/our-brand"}>
-                    <li className="relative">
-                      <a
-                        href=""
-                        className="flex items-center text-[16px] py-4 pl-12 pr-6 h-6 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out"
-                      >
-                        Our Brand
                       </a>
                     </li>
                   </Link>
